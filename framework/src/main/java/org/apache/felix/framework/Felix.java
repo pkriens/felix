@@ -4857,14 +4857,22 @@ public class Felix extends BundleImpl implements Framework
             ExtensionManager.m_extenderBoot != null ? "true" : "false");
 
         String s = null;
-        s = NativeLibraryClause.normalizeOSName(System.getProperty("os.name"));
-        m_configMutableMap.put(FelixConstants.FRAMEWORK_OS_NAME, s);
-        s = NativeLibraryClause.normalizeProcessor(System.getProperty("os.arch"));
-        m_configMutableMap.put(FelixConstants.FRAMEWORK_PROCESSOR, s);
-        m_configMutableMap.put(FelixConstants.FRAMEWORK_OS_VERSION,
-            NativeLibraryClause.normalizeOSVersion(System.getProperty("os.version")));
-        m_configMutableMap.put(
-            FelixConstants.FELIX_VERSION_PROPERTY, getFrameworkVersion());
+        if ( !m_configMutableMap.containsKey(FelixConstants.FRAMEWORK_OS_NAME)) {
+            s = NativeLibraryClause.normalizeOSName(System.getProperty("os.name"));
+            m_configMutableMap.put(FelixConstants.FRAMEWORK_OS_NAME, s);
+        }
+        
+        if ( !m_configMutableMap.containsKey(FelixConstants.FRAMEWORK_PROCESSOR)) {
+            s = NativeLibraryClause.normalizeProcessor(System.getProperty("os.arch"));
+            m_configMutableMap.put(FelixConstants.FRAMEWORK_PROCESSOR, s);
+        }
+        
+        if ( !m_configMutableMap.containsKey(FelixConstants.FRAMEWORK_OS_VERSION)) {
+            m_configMutableMap.put(FelixConstants.FRAMEWORK_OS_VERSION,
+                NativeLibraryClause.normalizeOSVersion(System.getProperty("os.version")));
+            m_configMutableMap.put(
+                FelixConstants.FELIX_VERSION_PROPERTY, getFrameworkVersion());
+        }
 
         Properties defaultProperties = Util.loadDefaultProperties(m_logger);
 
